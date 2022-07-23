@@ -29,7 +29,10 @@
 ## Installation
 
 ```bash
-$ npm install
+$ npm i
+$ npm run setup:db
+$ npm run setup:prisma
+
 ```
 
 ## Running the app
