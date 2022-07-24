@@ -26,8 +26,7 @@ export class AuthService {
         data: {
           email: data.email,
           password,
-          firstName: data.firstName,
-          lastName: data.lastName,
+          fullName: data.fullName,
         },
       });
 
