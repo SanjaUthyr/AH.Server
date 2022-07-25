@@ -23,22 +23,22 @@ class SignUpDto {
   readonly email: string;
 
   @ApiProperty({
-    example: 'Thang',
+    example: 'Thang Ngo',
   })
   @IsNotEmpty()
   @IsString()
   @MinLength(2)
   @MaxLength(255)
-  readonly firstName: string;
+  readonly fullName: string;
 
-  @ApiProperty({
-    example: 'Ngo',
-  })
-  @IsNotEmpty()
-  @IsString()
-  @MinLength(2)
-  @MaxLength(255)
-  readonly lastName: string;
+  // @ApiProperty({
+  //   example: 'Ngo',
+  // })
+  // @IsNotEmpty()
+  // @IsString()
+  // @MinLength(2)
+  // @MaxLength(255)
+  // readonly lastName: string;
 
   @ApiProperty({
     example: 'thangww123',
