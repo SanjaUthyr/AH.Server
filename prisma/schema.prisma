@@ -53,20 +53,20 @@ model Cart {
 
 model Course {
   id           String   @id @default(uuid())
-  title        String?
-  bio          String?
-  description  String?
-  requirements String?
-  forWho       String?
-  price        Float?
+  title        String
+  bio          String
+  description  String
+  requirements String
+  forWho       String
+  price        Float
   languages    String[]
 
-  imageUrl   String?
-  previewUrl String?
+  imageUrl   String
+  previewUrl String
 
-  discount      Int      @default(0)
-  discountStart DateTime
-  discountEnd   DateTime
+  discount      Int?      @default(0)
+  discountStart DateTime?
+  discountEnd   DateTime?
   discountCodes String[]
 
   author   User?   @relation("UserCourse", fields: [authorId], references: [id])

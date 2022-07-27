@@ -13,7 +13,7 @@
     "setup:prisma": "npx prisma generate && npx prisma migrate dev --name setup && npx prisma migrate deploy",
     "setup": "npm i && npm run setup:db && timeout 1 && npm run setup:prisma",
     "start": "nest start",
-    "start:dev": "nest start --watch",
+    "dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
