@@ -9,8 +9,6 @@ import {
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { CoursesService } from './courses.service';
-import { CreateCourseDto } from './dto/create-course.dto';
-import { UpdateCourseDto } from './dto/update-course.dto';
 
 @Controller('courses')
 export class CoursesController {

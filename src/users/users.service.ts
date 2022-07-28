@@ -11,7 +11,12 @@ export class UsersService {
   // }
 
   async findAll() {
-    return await this.prisma.user.findMany();
+    return await this.prisma.user.findMany().then((users) => {
+      return users.map((user: any) => {
+        delete user.password;
+        return user;
+      });
+    });
   }
 
   async findOne(id: string) {

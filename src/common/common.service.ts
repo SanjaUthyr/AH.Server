@@ -5,12 +5,16 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 export abstract class CommonService {
   constructor(public prisma: PrismaService, private route: string) {}
 
-  async create(createCommonDto) {
-    return await this.prisma[this.route].create({
+  async create(createCommonDto, callback) {
+    const newItem = await this.prisma[this.route].create({
       data: {
         ...createCommonDto,
       },
     });
+
+    if (callback) {
+      callback(newItem.id);
+    }
   }
 
   async findAll() {
