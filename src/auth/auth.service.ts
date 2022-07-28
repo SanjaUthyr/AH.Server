@@ -10,7 +10,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import SignInDto from './dto/sign-in.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { Prisma } from '@prisma/client';
+import { Prisma, Role } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -47,6 +47,7 @@ export class AuthService {
     const payload = {
       id: userId,
       email,
+      roles: [Role.ADMIN],
     };
     const secret = this.config.get('JWT_SECRET');
 

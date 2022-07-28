@@ -1,6 +1,9 @@
-import { Prisma, Course } from '@prisma/client';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Prisma, Course, Role } from '@prisma/client';
+import { BadRequestException, Injectable, UseGuards } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { JwtGuard } from 'src/auth/guards/jwt.guard';
+import { Roles } from 'src/auth/roles/roles.decorator';
+import { RolesGuard } from 'src/auth/roles/roles.guard';
 
 @Injectable()
 export class UsersService {

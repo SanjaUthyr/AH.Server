@@ -1,14 +1,14 @@
-import { CommonService } from './common/common.service';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { GraphQLModule } from '@nestjs/graphql';
+import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { RolesGuard } from './auth/roles/roles.guard';
+import { CoursesModule } from './courses/courses.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { PrismaService } from './prisma/prisma.service';
 import { UsersModule } from './users/users.module';
-import { CoursesModule } from './courses/courses.module';
 
 @Module({
   imports: [
@@ -26,6 +26,13 @@ import { CoursesModule } from './courses/courses.module';
     CoursesModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [
+    AppService,
+    PrismaService,
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: RolesGuard,
+    // },
+  ],
 })
 export class AppModule {}

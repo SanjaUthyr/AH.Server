@@ -1,3 +1,4 @@
+import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import {
   Controller,
   Get,
@@ -6,12 +7,16 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Prisma } from '@prisma/client';
+import { Prisma, Role } from '@prisma/client';
+import { Roles } from 'src/auth/roles/roles.decorator';
+import { RolesGuard } from 'src/auth/roles/roles.guard';
 
+@UseGuards(JwtGuard, RolesGuard)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -22,6 +27,7 @@ export class UsersController {
   // }
 
   @Get()
+  @Roles(Role.ADMIN)
   findAll() {
     return this.usersService.findAll();
   }
