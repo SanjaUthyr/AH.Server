@@ -1,11 +1,13 @@
+import { PagingDto } from './../common/paging.dto';
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { CoursesService } from './courses.service';
@@ -20,8 +22,8 @@ export class CoursesController {
   }
 
   @Get()
-  findAll() {
-    return this.coursesService.findAll();
+  findAll(@Body() query: PagingDto) {
+    return this.coursesService.findAll(query);
   }
 
   @Get(':id')

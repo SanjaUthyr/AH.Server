@@ -4,10 +4,11 @@
 
 Table User {
   id String [pk]
-  fullName String
-  email String [unique]
-  password String
-  cart Cart [not null]
+  fullName String [not null]
+  email String [unique, not null]
+  password String [not null]
+  avatarUrl String
+  cart Cart
   courses Course [not null]
   wishlist Wishlist [not null]
   createdCourses Course [not null]
@@ -29,7 +30,7 @@ Table Wishlist {
 Table Cart {
   id String [pk]
   user User [not null]
-  userId String [not null]
+  userId String [unique, not null]
   courses Course [not null]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
@@ -44,6 +45,8 @@ Table Course {
   forWho String [not null]
   price Float [not null]
   languages String[] [not null]
+  level String [not null]
+  skills String[] [not null]
   categories Category [not null]
   imageUrl String [not null]
   previewUrl String [not null]
@@ -51,8 +54,8 @@ Table Course {
   discountStart DateTime
   discountEnd DateTime
   discountCodes String[] [not null]
-  author User
-  authorId String
+  author User [not null]
+  authorId String [not null]
   students User [not null]
   ratings Rating [not null]
   courseContents CourseContent [not null]
@@ -127,9 +130,27 @@ Enum Role {
   USER
 }
 
+Enum CourseStatus {
+  PUBLISHED
+  DRAFT
+  PENDING
+  REJECTED
+}
+
+Enum CourseType {
+  FREE
+  PAID
+}
+
+Enum CourseLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
 Ref: Wishlist.userId > User.id
 
-Ref: Cart.userId > User.id
+Ref: Cart.userId - User.id
 
 Ref: Course.authorId > User.id
 

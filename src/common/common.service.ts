@@ -1,5 +1,6 @@
 import { PrismaService } from './../prisma/prisma.service';
 import { Injectable, BadRequestException } from '@nestjs/common';
+import { PagingDto } from './paging.dto';
 
 @Injectable()
 export abstract class CommonService {
@@ -17,7 +18,7 @@ export abstract class CommonService {
     }
   }
 
-  async findAll() {
+  async findAll(paging?: PagingDto) {
     return await this.prisma[this.route].findMany();
   }
 
