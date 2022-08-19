@@ -26,15 +26,24 @@ async function main() {
   //   });
   // }
 
-  // let user;
-  // const users1 = await prisma.user.findMany();
+  let user;
+  const users1 = await prisma.user.findMany();
+  const cate = await prisma.category.findMany();
 
-  // for (const course of courses.data) {
+  console.log(cate);
+  // for (const course of courses.data.slice(0, 1)) {
   //   user = users1[Math.floor(Math.random() * users1.length)];
+  //   //random 3 categories
+  //   const categories = [];
+  //   for (let i = 0; i < 3; i++) {
+  //     categories.push(cate[Math.floor(Math.random() * cate.length)]);
+  //   }
+  //   console.log(categories);
 
   //   await prisma.course.create({
   //     data: {
   //       ...course,
+  //       categories,
   //       authorId: user.id,
   //       previewUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
   //       languages: [course.languages],

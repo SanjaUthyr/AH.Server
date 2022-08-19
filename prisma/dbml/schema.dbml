@@ -54,8 +54,8 @@ Table Course {
   discountStart DateTime
   discountEnd DateTime
   discountCodes String[] [not null]
-  author User [not null]
-  authorId String [not null]
+  author User
+  authorId String
   students User [not null]
   ratings Rating [not null]
   courseContents CourseContent [not null]

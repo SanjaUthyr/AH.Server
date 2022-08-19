@@ -95,8 +95,8 @@ model Course {
   discountEnd   DateTime?
   discountCodes String[]
 
-  author   User   @relation("UserCourse", fields: [authorId], references: [id])
-  authorId String
+  author   User?   @relation("UserCourse", fields: [authorId], references: [id])
+  authorId String?
 
   students       User[]          @relation("UserPurchasedCourse")
   ratings        Rating[]

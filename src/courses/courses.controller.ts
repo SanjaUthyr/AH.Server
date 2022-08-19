@@ -1,3 +1,4 @@
+import { JwtGuard } from './../auth/guards/jwt.guard';
 import { PagingDto } from './../common/paging.dto';
 import {
   Body,
@@ -8,9 +9,12 @@ import {
   Patch,
   Post,
   Query,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { CoursesService } from './courses.service';
+import { FilterDto } from './dto/filter.dto';
 
 @Controller('courses')
 export class CoursesController {
@@ -21,14 +25,22 @@ export class CoursesController {
     return await this.coursesService.getAggregations();
   }
 
+  @Post('/filters')
+  async getByAuthorId(@Body() filter: FilterDto) {
+    return await this.coursesService.findAllWithFilter(filter);
+  }
+
+  //crud
   @Post()
-  create(@Body() createCourseDto: Prisma.CourseCreateInput) {
-    return this.coursesService.create(createCourseDto);
+  @UseGuards(JwtGuard)
+  create(@Request() req, @Body() createCourseDto: Prisma.CourseCreateInput) {
+    console.log(req.user);
+    return this.coursesService.create(req.user.id, createCourseDto);
   }
 
   @Get()
-  findAll(@Body() query: PagingDto) {
-    return this.coursesService.findAll(query);
+  findAll(@Body() paging: PagingDto) {
+    return this.coursesService.findAll(paging);
   }
 
   @Get(':id')

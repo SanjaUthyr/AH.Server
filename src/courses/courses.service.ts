@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { CommonService } from 'src/common/common.service';
 import { PagingDto } from 'src/common/paging.dto';
@@ -6,6 +10,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { UsersService } from 'src/users/users.service';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import * as aggregations from 'prisma/data/aggregations.json';
+import { FilterDto } from './dto/filter.dto';
 
 @Injectable()
 export class CoursesService extends CommonService {
@@ -13,16 +18,53 @@ export class CoursesService extends CommonService {
     super(prisma, 'course');
   }
 
-  async findAllByAuthor(authorId: string, paging: PagingDto) {
-    return await this.prisma.course.findMany({
-      where: { author: { id: authorId } },
-      take: +paging.size,
-      skip: +paging.size * +paging.page,
-    });
+  // async findAllByAuthor(authorId: string, paging: PagingDto) {
+  //   console.log(authorId, paging);
+  //   return await this.prisma.course.findMany({
+  //     where: { authorId },
+  //     take: +paging.size,
+  //     skip: +paging.size * +paging.page,
+  //   });
+  // }
+
+  filterItems(item, key) {
+    return item.map((p) => ({
+      [key]: {
+        equals: p,
+      },
+    }));
   }
-  async findAllWithFilter(filter: string) {
+  async findAllWithFilter(filter: FilterDto) {
+    const price = this.filterItems(filter.prices, 'price');
+    // const categories = this.filterItems(filter.categories, 'category');
+    // const levels = this.filterItems(filter.levels, 'level');
+    // const languages = this.filterItems(filter.languages, 'language');
+    // const skills = this.filterItems(filter.skills, 'skill');
+    // const durations = this.filterItems(filter.durations, 'duration');
+    // const ratings = this.filterItems(filter.ratings, 'rating');
+
     return await this.prisma.course.findMany({
-      where: {},
+      where: {
+        OR: [
+          {
+            authorId: {
+              equals: filter.authorId,
+            },
+          },
+          ...price,
+          // ...categories,
+          // ...levels,
+          // ...languages,
+          // ...skills,
+          // ...durations,
+          // ...ratings,
+        ],
+      },
+      select: {
+        id: true,
+        authorId: true,
+        price: true,
+      },
     });
   }
 
@@ -31,9 +73,8 @@ export class CoursesService extends CommonService {
   }
 
   //crud
-  async create(createCourseDto) {
-    // try {
-    await this.prisma.course
+  async create(userId: string, createCourseDto) {
+    const course = await this.prisma.course
       .create({
         data: {
           ...createCourseDto,
@@ -42,6 +83,8 @@ export class CoursesService extends CommonService {
       .catch((error) => {
         throw new BadRequestException(error.message.split('\n').slice(-4)[0]);
       });
+
+    await this.userService.updateAuthor(userId, course.id);
   }
 
   async findAll(paging: PagingDto) {
@@ -60,7 +103,7 @@ export class CoursesService extends CommonService {
   }
 
   async findOne(id: string) {
-    return await this.prisma.course.findUnique({
+    const res = await this.prisma.course.findUnique({
       where: {
         id,
       },
@@ -69,6 +112,10 @@ export class CoursesService extends CommonService {
         ratings: true,
       },
     });
+    if (!res) {
+      throw new NotFoundException('Course not found');
+    }
+    return res;
   }
 
   async update(id: string, updateUserDto: Prisma.CourseUpdateInput) {
