@@ -15,6 +15,7 @@ import {
 import { Prisma } from '@prisma/client';
 import { CoursesService } from './courses.service';
 import { FilterDto } from './dto/filter.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('courses')
 export class CoursesController {
@@ -26,8 +27,9 @@ export class CoursesController {
   }
 
   @Post('/filters')
-  async getByAuthorId(@Body() filter: FilterDto) {
-    return await this.coursesService.findAllWithFilter(filter);
+  @UseGuards(AuthGuard(['jwt', 'anonymous']))
+  async getByAuthorId(@Request() req, @Body() filter: FilterDto) {
+    return await this.coursesService.findAllWithFilter(req.user.id, filter);
   }
 
   @Post('/add-wishlist')
@@ -56,10 +58,10 @@ export class CoursesController {
     return this.coursesService.create(req.user.id, createCourseDto);
   }
 
-  @Post('/all')
-  findAll(@Body() paging: PagingDto) {
-    return this.coursesService.findAll(paging);
-  }
+  // @Post('/all')
+  // findAll(@Body() paging: PagingDto) {
+  //   return this.coursesService.findAll(paging);
+  // }
 
   @Get(':id')
   findOne(@Param('id') id: string) {

@@ -13,10 +13,11 @@ import * as aggregations from 'prisma/data/aggregations.json';
 import { FilterDto } from './dto/filter.dto';
 
 @Injectable()
-export class CoursesService extends CommonService {
-  constructor(prisma: PrismaService, private userService: UsersService) {
-    super(prisma, 'course');
-  }
+export class CoursesService {
+  constructor(
+    private prisma: PrismaService,
+    private userService: UsersService,
+  ) {}
 
   filterItems(item, key) {
     return item.map((p) => ({
@@ -25,7 +26,7 @@ export class CoursesService extends CommonService {
       },
     }));
   }
-  async findAllWithFilter(filter: FilterDto) {
+  async findAllWithFilter(userId: string, filter: FilterDto) {
     const price = this.filterItems(filter.prices, 'price');
     // const categories = this.filterItems(filter.categories, 'category');
     // const levels = this.filterItems(filter.levels, 'level');
@@ -34,7 +35,13 @@ export class CoursesService extends CommonService {
     // const durations = this.filterItems(filter.durations, 'duration');
     // const ratings = this.filterItems(filter.ratings, 'rating');
 
-    return await this.prisma.course.findMany({
+    // const user = await this.userService.findWishlistCart(userId);
+
+    // if (!user) {
+    //   throw new NotFoundException('User not found');
+    // }
+
+    const res = await this.prisma.course.findMany({
       where: {
         OR: [
           {
@@ -56,7 +63,18 @@ export class CoursesService extends CommonService {
         authorId: true,
         price: true,
       },
+
+      take: +filter.size,
+      skip: +filter.size * +filter.page,
     });
+
+    return res.length > 0
+      ? {
+          courses: res,
+          pages: Math.floor((await this.prisma.course.count()) / +filter.size),
+          count: await this.prisma.course.count(),
+        }
+      : await this.findAll(userId, { page: filter.page, size: filter.size });
   }
 
   getAggregations() {
@@ -90,7 +108,7 @@ export class CoursesService extends CommonService {
   }
 
   async getWishlist(userId: string) {
-    const user = await this.userService.findWishlist(userId);
+    const user = await this.userService.findWishlistCart(userId);
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -147,16 +165,24 @@ export class CoursesService extends CommonService {
     await this.userService.updateAuthor(userId, course.id);
   }
 
-  async findAll(paging: PagingDto) {
+  async findAll(userId: string, paging: PagingDto) {
+    const user = await this.userService.findWishlistCart(userId);
+
     return {
-      courses: await this.prisma.course.findMany({
-        take: +paging.size,
-        skip: +paging.size * +paging.page,
-        include: {
-          author: true,
-          ratings: true,
-        },
-      }),
+      courses: (
+        await this.prisma.course.findMany({
+          take: +paging.size,
+          skip: +paging.size * +paging.page,
+          include: {
+            author: true,
+            ratings: true,
+          },
+        })
+      ).map((course) => ({
+        ...course,
+        inWishlist:
+          user.wishlist.filter((item) => item.id == course.id).length > 0,
+      })),
       pages: Math.floor((await this.prisma.course.count()) / +paging.size),
       count: await this.prisma.course.count(),
     };

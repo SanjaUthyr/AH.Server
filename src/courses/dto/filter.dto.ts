@@ -8,6 +8,9 @@ export interface FilterDto {
   ratings?: string[];
   authorId?: string;
   sort?: Sort;
+
+  size?: number;
+  page?: number;
 }
 export enum Sort {
   ASC = 'ASC',

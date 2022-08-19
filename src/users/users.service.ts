@@ -33,13 +33,14 @@ export class UsersService {
       // },
     });
   }
-  async findWishlist(userId: string) {
+  async findWishlistCart(userId: string) {
     return await this.prisma.user.findUnique({
       where: {
         id: userId,
       },
       select: {
         wishlist: true,
+        cart: true,
       },
     });
   }
