@@ -1,0 +1,404 @@
+{
+  "aggregations": [
+    {
+      "id": "price",
+      "options": [
+        {
+          "title": "Paid",
+          "value": "price-paid"
+        },
+        {
+          "title": "Free",
+          "value": "price-free"
+        }
+      ]
+    },
+    {
+      "id": "level",
+      "options": [
+        {
+          "title": "All Levels",
+          "value": "all"
+        },
+        {
+          "title": "Beginner",
+          "value": "beginner"
+        },
+        {
+          "title": "Intermediate",
+          "value": "intermediate"
+        },
+        {
+          "title": "Expert",
+          "value": "expert"
+        }
+      ]
+    },
+    {
+      "id": "language",
+      "title": "Language",
+      "options": [
+        {
+          "title": "English",
+          "value": "en"
+        },
+        {
+          "title": "Português",
+          "value": "pt"
+        },
+        {
+          "title": "Español",
+          "value": "es"
+        },
+        {
+          "title": "Türkçe",
+          "value": "tr"
+        },
+        {
+          "title": "日本語",
+          "value": "ja"
+        },
+        {
+          "title": "Deutsch",
+          "value": "de"
+        },
+        {
+          "title": "Français",
+          "value": "fr"
+        },
+        {
+          "title": "العربية",
+          "value": "ar"
+        },
+        {
+          "title": "Italiano",
+          "value": "it"
+        },
+        {
+          "title": "Русский",
+          "value": "ru"
+        },
+        {
+          "title": "中文",
+          "value": "zh"
+        },
+        {
+          "title": "हिन्दी",
+          "value": "hi"
+        },
+        {
+          "title": "한국어",
+          "value": "ko"
+        },
+        {
+          "title": "Bahasa Indonesia",
+          "value": "id"
+        },
+        {
+          "title": "Polski",
+          "value": "pl"
+        },
+        {
+          "title": "اردو",
+          "value": "ur"
+        },
+        {
+          "title": "ภาษาไทย",
+          "value": "th"
+        },
+        {
+          "title": "Română",
+          "value": "ro"
+        },
+        {
+          "title": "தமிழ்",
+          "value": "ta"
+        },
+        {
+          "title": "Nederlands",
+          "value": "nl"
+        },
+        {
+          "title": "‏עברית‏",
+          "value": "he"
+        },
+        {
+          "title": "Tiếng Việt",
+          "value": "vi"
+        },
+        {
+          "title": "Magyar",
+          "value": "hu"
+        },
+        {
+          "title": "Ελληνικά",
+          "value": "el"
+        },
+        {
+          "title": "Bangla",
+          "value": "bn"
+        },
+        {
+          "title": "Telugu",
+          "value": "te"
+        },
+        {
+          "title": "Azərbaycan dili",
+          "value": "az"
+        },
+        {
+          "title": "मराठी",
+          "value": "mr"
+        },
+        {
+          "title": "Malayāḷam",
+          "value": "ml"
+        },
+        {
+          "title": "فارسی",
+          "value": "fa"
+        },
+        {
+          "title": "Українська",
+          "value": "uk"
+        },
+        {
+          "title": "Hrvatski",
+          "value": "hr"
+        },
+        {
+          "title": "မြန်မာဘာသာ",
+          "value": "my"
+        },
+        {
+          "title": "Afrikaans",
+          "value": "af"
+        },
+        {
+          "title": "Български",
+          "value": "bg"
+        },
+        {
+          "title": "Српски",
+          "value": "sr"
+        },
+        {
+          "title": "Svenska",
+          "value": "sv"
+        },
+        {
+          "title": "ગુજરાતી",
+          "value": "gu"
+        },
+        {
+          "title": "Norsk",
+          "value": "nb"
+        },
+        {
+          "title": "Čeština",
+          "value": "cs"
+        },
+        {
+          "title": "Kannaḍa",
+          "value": "kn"
+        },
+        {
+          "title": "Suomi",
+          "value": "fi"
+        },
+        {
+          "title": "Bahasa Melayu",
+          "value": "ms"
+        },
+        {
+          "title": "Filipino",
+          "value": "tl"
+        },
+        {
+          "title": "Soomaaliga",
+          "value": "so"
+        },
+        {
+          "title": "नेपाली",
+          "value": "ne"
+        },
+        {
+          "title": "Eesti",
+          "value": "et"
+        },
+        {
+          "title": "پښتو",
+          "value": "ps"
+        },
+        {
+          "title": "Dansk",
+          "value": "da"
+        },
+        {
+          "title": "Shqip",
+          "value": "sq"
+        },
+        {
+          "title": "O'zbek",
+          "value": "uz"
+        },
+        {
+          "title": "Català",
+          "value": "ca"
+        },
+        {
+          "title": "ქართული",
+          "value": "ka"
+        },
+        {
+          "title": "Latviešu",
+          "value": "lv"
+        },
+        {
+          "title": "Қазақша",
+          "value": "kk"
+        },
+        {
+          "title": "Lietuvių",
+          "value": "lt"
+        },
+        {
+          "title": "Slovenčina",
+          "value": "sk"
+        },
+        {
+          "title": "Kiswahili",
+          "value": "sw"
+        },
+        {
+          "title": "Gaeilge",
+          "value": "ga"
+        },
+        {
+          "title": "ਪੰਜਾਬੀ",
+          "value": "pa"
+        },
+        {
+          "title": "Монгол",
+          "value": "mn"
+        },
+        {
+          "title": "Khmer",
+          "value": "km"
+        },
+        {
+          "title": "Kurdî",
+          "value": "ku"
+        },
+        {
+          "title": "Македонски",
+          "value": "mk"
+        },
+        {
+          "title": "Qhichwa",
+          "value": "qu"
+        },
+        {
+          "title": "Avañe'ẽ",
+          "value": "gn"
+        },
+        {
+          "title": "Ayisyen",
+          "value": "ht"
+        },
+        {
+          "title": "Հայերեն",
+          "value": "hy"
+        },
+        {
+          "title": "Slovenščina",
+          "value": "sl"
+        },
+        {
+          "title": "Aymar aru",
+          "value": "ay"
+        },
+        {
+          "title": "Cymraeg",
+          "value": "cy"
+        },
+        {
+          "title": "Euskara",
+          "value": "eu"
+        },
+        {
+          "title": "Føroyskt",
+          "value": "fo"
+        },
+        {
+          "title": "Frysk",
+          "value": "fy"
+        },
+        {
+          "title": "тоҷикӣ, تاجیکی‎, tojikī",
+          "value": "tg"
+        },
+        {
+          "title": "татарча / Tatarça / تاتارچا",
+          "value": "tt"
+        },
+        {
+          "title": "isiXhosa",
+          "value": "xh"
+        },
+        {
+          "title": "isiZulu",
+          "value": "zu"
+        }
+      ]
+    },
+    {
+      "id": "ratings",
+      "title": "Ratings",
+      "options": [
+        {
+          "title": "4.5 & up",
+          "value": "4.5"
+        },
+        {
+          "title": "4.0 & up",
+          "value": "4.0"
+        },
+        {
+          "title": "3.5 & up",
+          "value": "3.5"
+        },
+        {
+          "title": "3.0 & up",
+          "value": "3.0"
+        }
+      ]
+    },
+    {
+      "id": "duration",
+      "title": "Duration",
+      "options": [
+        {
+          "title": "0-1 Hour",
+          "value": "extraShort"
+        },
+        {
+          "title": "1-3 Hours",
+          "value": "short"
+        },
+        {
+          "title": "3-6 Hours",
+          "value": "medium"
+        },
+        {
+          "title": "6-17 Hours",
+          "value": "long"
+        },
+        {
+          "title": "17+ Hours",
+          "value": "extraLong"
+        }
+      ]
+    }
+  ]
+}

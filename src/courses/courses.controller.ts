@@ -16,6 +16,11 @@ import { CoursesService } from './courses.service';
 export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
 
+  @Get('/aggregations')
+  async getAggregations() {
+    return await this.coursesService.getAggregations();
+  }
+
   @Post()
   create(@Body() createCourseDto: Prisma.CourseCreateInput) {
     return this.coursesService.create(createCourseDto);

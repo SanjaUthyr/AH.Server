@@ -5,6 +5,7 @@ import { PagingDto } from 'src/common/paging.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UsersService } from 'src/users/users.service';
 import { UpdateCourseDto } from './dto/update-course.dto';
+import * as aggregations from 'prisma/data/aggregations.json';
 
 @Injectable()
 export class CoursesService extends CommonService {
@@ -12,19 +13,24 @@ export class CoursesService extends CommonService {
     super(prisma, 'course');
   }
 
-  // async findAllByAuthor(authorId: string, paging: PagingDto) {
-  //   return await this.prisma.course.findMany({
-  //     where: { author: { id: authorId } },
-  //     take: +paging.size,
-  //     skip: +paging.size * +paging.page,
-  //   });
-  // }
-  // async findAllWithFilter(filter: string) {
-  //   return await this.prisma.course.findMany({
-  //     where: {},
-  //   });
-  // }
+  async findAllByAuthor(authorId: string, paging: PagingDto) {
+    return await this.prisma.course.findMany({
+      where: { author: { id: authorId } },
+      take: +paging.size,
+      skip: +paging.size * +paging.page,
+    });
+  }
+  async findAllWithFilter(filter: string) {
+    return await this.prisma.course.findMany({
+      where: {},
+    });
+  }
 
+  getAggregations() {
+    return aggregations;
+  }
+
+  //crud
   async create(createCourseDto) {
     // try {
     await this.prisma.course

@@ -1,7 +1,8 @@
 import { PrismaClient, Prisma } from '@prisma/client';
 
 const prisma = new PrismaClient();
-import fs from 'fs';
+import { writeFile } from 'fs/promises';
+import { join } from 'path';
 import * as categories from './data/category.json';
 import * as courses from './data/course.json';
 import * as users from './data/user.json';
