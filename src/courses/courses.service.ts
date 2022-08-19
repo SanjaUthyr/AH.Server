@@ -65,7 +65,6 @@ export class CoursesService extends CommonService {
 
   async addToWishlist(userId: string, courseId: string) {
     const user = await this.userService.findOne(userId);
-    console.log(user);
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -77,6 +76,19 @@ export class CoursesService extends CommonService {
     await this.userService.addWishlist(userId, courseId);
   }
 
+  async deleteWishlist(userId: string, courseId: string) {
+    const user = await this.userService.findOne(userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    const course = await this.findOne(courseId);
+    if (!course) {
+      throw new NotFoundException('Course not found');
+    }
+
+    await this.userService.deleteWishlist(userId, courseId);
+  }
+
   async getWishlist(userId: string) {
     const user = await this.userService.findWishlist(userId);
     if (!user) {
@@ -85,6 +97,41 @@ export class CoursesService extends CommonService {
 
     return user.wishlist;
   }
+
+  async addToCart(userId: string, courseId: string) {
+    const user = await this.userService.findOne(userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    const course = await this.findOne(courseId);
+    if (!course) {
+      throw new NotFoundException('Course not found');
+    }
+
+    await this.userService.addToCart(userId, courseId);
+  }
+
+  // async deleteCart(userId: string, courseId: string) {
+  //   const user = await this.userService.findOne(userId);
+  //   if (!user) {
+  //     throw new NotFoundException('User not found');
+  //   }
+  //   const course = await this.findOne(courseId);
+  //   if (!course) {
+  //     throw new NotFoundException('Course not found');
+  //   }
+
+  //   await this.userService.deleteCart(userId, courseId);
+  // }
+
+  // async getCart(userId: string) {
+  //   const user = await this.userService.findCart(userId);
+  //   if (!user) {
+  //     throw new NotFoundException('User not found');
+  //   }
+
+  //   return user.wishlist;
+  // }
   //crud
   async create(userId: string, createCourseDto) {
     const course = await this.prisma.course

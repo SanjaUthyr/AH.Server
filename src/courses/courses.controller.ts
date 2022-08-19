@@ -36,6 +36,12 @@ export class CoursesController {
     return await this.coursesService.addToWishlist(req.user.id, data.courseId);
   }
 
+  @Post('/delete-wishlist')
+  @UseGuards(JwtGuard)
+  async deleteWishlist(@Request() req, @Body() data) {
+    return await this.coursesService.deleteWishlist(req.user.id, data.courseId);
+  }
+
   @Post('wishlist')
   @UseGuards(JwtGuard)
   async getWishlist(@Request() req, @Body() paging: PagingDto) {
@@ -50,7 +56,7 @@ export class CoursesController {
     return this.coursesService.create(req.user.id, createCourseDto);
   }
 
-  @Get()
+  @Post('/all')
   findAll(@Body() paging: PagingDto) {
     return this.coursesService.findAll(paging);
   }

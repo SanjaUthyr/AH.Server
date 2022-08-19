@@ -73,6 +73,49 @@ export class UsersService {
       },
     });
   }
+  async deleteWishlist(userId: string, courseId: string) {
+    await this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        wishlist: {
+          disconnect: {
+            id: courseId,
+          },
+        },
+      },
+    });
+  }
+
+  async addToCart(userId: string, courseId: string) {
+    await this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        cart: {
+          connect: {
+            id: courseId,
+          },
+        },
+      },
+    });
+  }
+  async deleteCart(userId: string, courseId: string) {
+    await this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        cart: {
+          // disconnect: {
+          //   id: courseId,
+          // },
+        },
+      },
+    });
+  }
 
   async updateAuthor(id: string, courseId: string) {
     await this.prisma.user.update({
