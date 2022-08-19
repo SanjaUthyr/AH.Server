@@ -10,21 +10,12 @@ Table User {
   avatarUrl String
   cart Cart
   courses Course [not null]
-  wishlist Wishlist [not null]
+  wishlist Course [not null]
   createdCourses Course [not null]
   Rating Rating [not null]
   roles Role[] [not null]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
-}
-
-Table Wishlist {
-  id String [pk]
-  course Course [not null]
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [not null]
-  User User
-  userId String
 }
 
 Table Cart {
@@ -63,8 +54,8 @@ Table Course {
   updatedAt DateTime [not null]
   cart Cart
   cartId String
-  Wishlist Wishlist
-  wishlistId String
+  User User
+  userId String
 }
 
 Table Category {
@@ -148,15 +139,13 @@ Enum CourseLevel {
   ADVANCED
 }
 
-Ref: Wishlist.userId > User.id
-
 Ref: Cart.userId - User.id
 
 Ref: Course.authorId > User.id
 
 Ref: Course.cartId > Cart.id
 
-Ref: Course.wishlistId > Wishlist.id
+Ref: Course.userId > User.id
 
 Ref: Category.parentId > Category.id
 

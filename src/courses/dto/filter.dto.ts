@@ -7,4 +7,9 @@ export interface FilterDto {
   durations?: string[];
   ratings?: string[];
   authorId?: string;
+  sort?: Sort;
+}
+export enum Sort {
+  ASC = 'ASC',
+  DESC = 'DESC',
 }

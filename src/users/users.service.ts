@@ -4,6 +4,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { Roles } from 'src/auth/roles/roles.decorator';
 import { RolesGuard } from 'src/auth/roles/roles.guard';
+import { PagingDto } from 'src/common/paging.dto';
 
 @Injectable()
 export class UsersService {
@@ -27,6 +28,19 @@ export class UsersService {
       where: {
         id,
       },
+      // select: {
+      //   password: false,
+      // },
+    });
+  }
+  async findWishlist(userId: string) {
+    return await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        wishlist: true,
+      },
     });
   }
 
@@ -43,6 +57,21 @@ export class UsersService {
     } catch (error) {
       throw new BadRequestException('User not found');
     }
+  }
+
+  async addWishlist(userId: string, courseId: string) {
+    await this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        wishlist: {
+          connect: {
+            id: courseId,
+          },
+        },
+      },
+    });
   }
 
   async updateAuthor(id: string, courseId: string) {
@@ -70,5 +99,18 @@ export class UsersService {
     } catch (error) {
       throw new BadRequestException('User not found');
     }
+  }
+
+  async getWishlist(userId: string, paging: PagingDto) {
+    return await this.prisma.user.findMany({
+      where: {
+        id: userId,
+      },
+      select: {
+        wishlist: true,
+      },
+      take: +paging.size,
+      skip: +paging.size * +paging.page,
+    });
   }
 }

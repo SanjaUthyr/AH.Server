@@ -15,15 +15,15 @@ datasource db {
 }
 
 model User {
-  id             String     @id @default(uuid())
+  id             String   @id @default(uuid())
   fullName       String
-  email          String     @unique
+  email          String   @unique
   password       String
   avatarUrl      String?
   cart           Cart?
-  courses        Course[]   @relation("UserPurchasedCourse")
-  wishlist       Wishlist[]
-  createdCourses Course[]   @relation("UserCourse")
+  courses        Course[] @relation("UserPurchasedCourse")
+  wishlist       Course[]
+  createdCourses Course[] @relation("UserCourse")
   Rating         Rating[]
   roles          Role[]
 
@@ -54,16 +54,16 @@ enum CourseLevel {
   ADVANCED
 }
 
-model Wishlist {
-  id String @id @default(uuid())
+// model Wishlist {
+//   id String @id @default(uuid())
 
-  course Course[]
+//   course Course[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  User      User?    @relation(fields: [userId], references: [id])
-  userId    String?
-}
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   User      User?    @relation(fields: [userId], references: [id])
+//   userId    String?
+// }
 
 model Cart {
   id        String   @id @default(uuid())
@@ -111,10 +111,12 @@ model Course {
   // wishlist   Wishlist? @relation(fields: [wishlistId], references: [id])
   // wishlistId String?
 
-  Wishlist   Wishlist? @relation(fields: [wishlistId], references: [id])
-  wishlistId String?
+  // Wishlist   Wishlist? @relation(fields: [wishlistId], references: [id])
+  // wishlistId String?
   // User       User?     @relation(fields: [userId], references: [id])
   // userId     String?
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
 }
 
 model Category {

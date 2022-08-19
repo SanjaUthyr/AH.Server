@@ -18,15 +18,6 @@ export class CoursesService extends CommonService {
     super(prisma, 'course');
   }
 
-  // async findAllByAuthor(authorId: string, paging: PagingDto) {
-  //   console.log(authorId, paging);
-  //   return await this.prisma.course.findMany({
-  //     where: { authorId },
-  //     take: +paging.size,
-  //     skip: +paging.size * +paging.page,
-  //   });
-  // }
-
   filterItems(item, key) {
     return item.map((p) => ({
       [key]: {
@@ -72,6 +63,28 @@ export class CoursesService extends CommonService {
     return aggregations;
   }
 
+  async addToWishlist(userId: string, courseId: string) {
+    const user = await this.userService.findOne(userId);
+    console.log(user);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    const course = await this.findOne(courseId);
+    if (!course) {
+      throw new NotFoundException('Course not found');
+    }
+
+    await this.userService.addWishlist(userId, courseId);
+  }
+
+  async getWishlist(userId: string) {
+    const user = await this.userService.findWishlist(userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user.wishlist;
+  }
   //crud
   async create(userId: string, createCourseDto) {
     const course = await this.prisma.course
@@ -109,7 +122,7 @@ export class CoursesService extends CommonService {
       },
       include: {
         author: true,
-        ratings: true,
+        // ratings: true,
       },
     });
     if (!res) {
