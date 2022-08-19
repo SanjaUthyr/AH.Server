@@ -166,7 +166,7 @@ export class CoursesService {
   }
 
   async findAll(userId: string, paging: PagingDto) {
-    const user = await this.userService.findWishlistCart(userId);
+    const user = await this.userService.findWishlistCart(userId ? userId : '');
 
     return {
       courses: (
@@ -180,8 +180,9 @@ export class CoursesService {
         })
       ).map((course) => ({
         ...course,
-        inWishlist:
-          user.wishlist.filter((item) => item.id == course.id).length > 0,
+        inWishlist: !user
+          ? false
+          : user.wishlist.filter((item) => item.id == course.id).length > 0,
       })),
       pages: Math.floor((await this.prisma.course.count()) / +paging.size),
       count: await this.prisma.course.count(),
