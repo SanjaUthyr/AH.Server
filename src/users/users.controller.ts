@@ -52,9 +52,9 @@ export class UsersController {
     return this.usersService.remove(id);
   }
 
-  @Post('/wishlist')
-  @UseGuards(JwtGuard)
-  getBWishlist(@Request() req, @Body() paging: PagingDto) {
-    return this.usersService.getWishlist(req.user, paging);
-  }
+  // @Post('/wishlist')
+  // @UseGuards(JwtGuard)
+  // getWishlist(@Request() req, @Body() paging: PagingDto) {
+  //   return this.usersService.getWishlist(req.user, paging);
+  // }
 }

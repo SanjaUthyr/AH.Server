@@ -108,12 +108,12 @@ export class CoursesService {
   }
 
   async getWishlist(userId: string) {
-    const user = await this.userService.findWishlistCart(userId);
-    if (!user) {
+    const wishlist = await this.userService.findWishlist(userId);
+    if (!wishlist) {
       throw new NotFoundException('User not found');
     }
 
-    return user.wishlist;
+    return wishlist;
   }
 
   async addToCart(userId: string, courseId: string) {
@@ -129,27 +129,27 @@ export class CoursesService {
     await this.userService.addToCart(userId, courseId);
   }
 
-  // async deleteCart(userId: string, courseId: string) {
-  //   const user = await this.userService.findOne(userId);
-  //   if (!user) {
-  //     throw new NotFoundException('User not found');
-  //   }
-  //   const course = await this.findOne(courseId);
-  //   if (!course) {
-  //     throw new NotFoundException('Course not found');
-  //   }
+  async deleteCart(userId: string, courseId: string) {
+    const user = await this.userService.findOne(userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    const course = await this.findOne(courseId);
+    if (!course) {
+      throw new NotFoundException('Course not found');
+    }
 
-  //   await this.userService.deleteCart(userId, courseId);
-  // }
+    await this.userService.deleteCart(userId, courseId);
+  }
 
-  // async getCart(userId: string) {
-  //   const user = await this.userService.findCart(userId);
-  //   if (!user) {
-  //     throw new NotFoundException('User not found');
-  //   }
+  async getCart(userId: string) {
+    const cart = await this.userService.getCart(userId);
+    if (!cart) {
+      throw new NotFoundException('User not found');
+    }
 
-  //   return user.wishlist;
-  // }
+    return cart;
+  }
   //crud
   async create(userId: string, createCourseDto) {
     const course = await this.prisma.course
@@ -166,8 +166,8 @@ export class CoursesService {
   }
 
   async findAll(userId: string, paging: PagingDto) {
-    const user = await this.userService.findWishlistCart(userId ? userId : '');
-
+    const wishlist = await this.userService.findWishlist(userId ? userId : '');
+    const cart = await this.userService.getCart(userId ? userId : '');
     return {
       courses: (
         await this.prisma.course.findMany({
@@ -180,9 +180,12 @@ export class CoursesService {
         })
       ).map((course) => ({
         ...course,
-        inWishlist: !user
+        inWishlist: !wishlist
           ? false
-          : user.wishlist.filter((item) => item.id == course.id).length > 0,
+          : wishlist.filter((item) => item.id == course.id).length > 0,
+        inCart: !cart
+          ? false
+          : cart.courses.filter((item) => item.id == course.id).length > 0,
       })),
       pages: Math.floor((await this.prisma.course.count()) / +paging.size),
       count: await this.prisma.course.count(),

@@ -50,6 +50,25 @@ export class CoursesController {
     return await this.coursesService.getWishlist(req.user.id);
   }
 
+  @Post('/add-cart')
+  @UseGuards(JwtGuard)
+  async addToCart(@Request() req, @Body() data) {
+    console.log(req.user, data);
+    return await this.coursesService.addToCart(req.user.id, data.courseId);
+  }
+
+  @Post('/delete-Cart')
+  @UseGuards(JwtGuard)
+  async deleteCart(@Request() req, @Body() data) {
+    return await this.coursesService.deleteCart(req.user.id, data.courseId);
+  }
+
+  @Post('cart')
+  @UseGuards(JwtGuard)
+  async getCart(@Request() req, @Body() paging: PagingDto) {
+    return await this.coursesService.getCart(req.user.id);
+  }
+
   //crud
   @Post()
   @UseGuards(JwtGuard)
