@@ -130,6 +130,7 @@ export class CoursesService {
   }
 
   async deleteCart(userId: string, courseId: string) {
+    console.log(userId, courseId);
     const user = await this.userService.findOne(userId);
     if (!user) {
       throw new NotFoundException('User not found');
@@ -192,6 +193,28 @@ export class CoursesService {
     };
   }
 
+  async findOneWithUserId(userId: string, id: string) {
+    const res = await this.prisma.course.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        author: true,
+        // ratings: true,
+      },
+    });
+
+    const cart = await this.userService.getCart(userId ? userId : '');
+
+    if (!res) {
+      throw new NotFoundException('Course not found');
+    }
+    return {
+      inCart: !cart
+        ? false
+        : cart.courses.filter((item) => item.id == res.id).length > 0,
+    };
+  }
   async findOne(id: string) {
     const res = await this.prisma.course.findUnique({
       where: {
@@ -202,6 +225,7 @@ export class CoursesService {
         // ratings: true,
       },
     });
+
     if (!res) {
       throw new NotFoundException('Course not found');
     }

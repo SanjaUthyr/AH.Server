@@ -73,7 +73,6 @@ export class CoursesController {
   @Post()
   @UseGuards(JwtGuard)
   create(@Request() req, @Body() createCourseDto: Prisma.CourseCreateInput) {
-    console.log(req.user);
     return this.coursesService.create(req.user.id, createCourseDto);
   }
 
@@ -85,6 +84,12 @@ export class CoursesController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.coursesService.findOne(id);
+  }
+
+  @Get('/in-cart/:id')
+  @UseGuards(AuthGuard(['jwt']))
+  checkCourseInCart(@Request() req, @Param('id') id: string) {
+    return this.coursesService.findOneWithUserId(req.user.id, id);
   }
 
   @Patch(':id')
