@@ -30,7 +30,7 @@ export class CoursesService {
     const price = this.filterItems(filter.prices, 'price');
     // const categories = this.filterItems(filter.categories, 'category');
     // const levels = this.filterItems(filter.levels, 'level');
-    // const languages = this.filterItems(filter.languages, 'language');
+    const languages = this.filterItems(filter.languages, 'languages');
     // const skills = this.filterItems(filter.skills, 'skill');
     // const durations = this.filterItems(filter.durations, 'duration');
     // const ratings = this.filterItems(filter.ratings, 'rating');
@@ -52,7 +52,7 @@ export class CoursesService {
           ...price,
           // ...categories,
           // ...levels,
-          // ...languages,
+          ...languages,
           // ...skills,
           // ...durations,
           // ...ratings,
@@ -68,7 +68,12 @@ export class CoursesService {
       skip: +filter.size * +filter.page,
     });
 
-    return res.length > 0
+    // return {
+    //   courses: res,
+    //   pages: Math.floor((await this.prisma.course.count()) / +filter.size),
+    //   count: await this.prisma.course.count(),
+    // };
+    return !filter.clearAll
       ? {
           courses: res,
           pages: Math.floor((await this.prisma.course.count()) / +filter.size),

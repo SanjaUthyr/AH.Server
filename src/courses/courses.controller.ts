@@ -89,6 +89,7 @@ export class CoursesController {
   @Get('/in-cart/:id')
   @UseGuards(AuthGuard(['jwt']))
   checkCourseInCart(@Request() req, @Param('id') id: string) {
+    if (!req.user) return { inCart: false };
     return this.coursesService.findOneWithUserId(req.user.id, id);
   }
 

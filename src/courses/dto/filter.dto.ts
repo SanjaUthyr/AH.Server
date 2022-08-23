@@ -8,6 +8,7 @@ export interface FilterDto {
   ratings?: string[];
   authorId?: string;
   sort?: Sort;
+  clearAll?: boolean;
 
   size?: number;
   page?: number;
