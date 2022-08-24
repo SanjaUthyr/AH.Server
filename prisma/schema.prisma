@@ -89,6 +89,7 @@ model Course {
   level        String
   skills       String[]
   categories   Category[]
+  duration     String?
 
   imageUrl   String
   previewUrl String

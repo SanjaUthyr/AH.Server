@@ -1,7 +1,7 @@
 {
   "aggregations": [
     {
-      "id": "price",
+      "id": "prices",
       "options": [
         {
           "title": "Paid",
@@ -14,7 +14,7 @@
       ]
     },
     {
-      "id": "level",
+      "id": "levels",
       "options": [
         {
           "title": "All Levels",
@@ -35,8 +35,7 @@
       ]
     },
     {
-      "id": "language",
-      "title": "Language",
+      "id": "languages",
       "options": [
         {
           "title": "English",
@@ -354,7 +353,6 @@
     },
     {
       "id": "ratings",
-      "title": "Ratings",
       "options": [
         {
           "title": "4.5 & up",
@@ -375,8 +373,7 @@
       ]
     },
     {
-      "id": "duration",
-      "title": "Duration",
+      "id": "durations",
       "options": [
         {
           "title": "0-1 Hour",
@@ -399,6 +396,14 @@
           "value": "extraLong"
         }
       ]
+    },
+    {
+      "id": "categories",
+      "options": []
+    },
+    {
+      "id": "skills",
+      "options": []
     }
   ]
 }

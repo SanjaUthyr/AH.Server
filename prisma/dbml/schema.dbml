@@ -31,6 +31,7 @@ Table Course {
   level String [not null]
   skills String[] [not null]
   categories Category [not null]
+  duration String
   imageUrl String [not null]
   previewUrl String [not null]
   discount Int [default: 0]

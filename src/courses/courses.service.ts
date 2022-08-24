@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Prisma, Course } from '@prisma/client';
 import { CommonService } from 'src/common/common.service';
 import { PagingDto } from 'src/common/paging.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -11,6 +11,7 @@ import { UsersService } from 'src/users/users.service';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import * as aggregations from 'prisma/data/aggregations.json';
 import { FilterDto } from './dto/filter.dto';
+import { triggerAsyncId } from 'async_hooks';
 
 @Injectable()
 export class CoursesService {
@@ -26,14 +27,18 @@ export class CoursesService {
       },
     }));
   }
+
+  // getValPrice(prices) {
+  //   if()
+  // }
   async findAllWithFilter(userId: string, filter: FilterDto) {
     const price = this.filterItems(filter.prices, 'price');
     // const categories = this.filterItems(filter.categories, 'category');
-    // const levels = this.filterItems(filter.levels, 'level');
+    const levels = this.filterItems(filter.levels, 'level');
     const languages = this.filterItems(filter.languages, 'languages');
     // const skills = this.filterItems(filter.skills, 'skill');
-    // const durations = this.filterItems(filter.durations, 'duration');
-    // const ratings = this.filterItems(filter.ratings, 'rating');
+    const durations = this.filterItems(filter.durations, 'duration');
+    const ratings = this.filterItems(filter.ratings, 'ratings');
 
     // const user = await this.userService.findWishlistCart(userId);
 
@@ -41,33 +46,47 @@ export class CoursesService {
     //   throw new NotFoundException('User not found');
     // }
 
-    const res = await this.prisma.course.findMany({
+    let res: any = await this.prisma.course.findMany({
       where: {
-        OR: [
-          {
-            authorId: {
-              equals: filter.authorId,
-            },
-          },
-          ...price,
-          // ...categories,
-          // ...levels,
+        AND: [
+          filter.authorId === ''
+            ? {}
+            : {
+                authorId: {
+                  equals: filter.authorId,
+                },
+              },
+          ,
           ...languages,
+          // ...categories,
+          ...levels,
           // ...skills,
-          // ...durations,
+          ...durations,
           // ...ratings,
         ],
       },
-      select: {
-        id: true,
-        authorId: true,
-        price: true,
+      include: {
+        author: true,
+        ratings: true,
       },
-
       take: +filter.size,
       skip: +filter.size * +filter.page,
     });
 
+    let sum;
+    // sum of ratings in course
+    res = res.filter((item) => {
+      sum =
+        item.ratings.reduce(
+          (total, curr) => total + parseFloat(curr.rating),
+          0,
+        ) / item.ratings.length;
+
+      return (
+        filter.ratings.filter((rating) => sum >= +rating && sum < +rating + 0.5)
+          .length > 0
+      );
+    });
     // return {
     //   courses: res,
     //   pages: Math.floor((await this.prisma.course.count()) / +filter.size),
@@ -77,7 +96,7 @@ export class CoursesService {
       ? {
           courses: res,
           pages: Math.floor((await this.prisma.course.count()) / +filter.size),
-          count: await this.prisma.course.count(),
+          count: res.length,
         }
       : await this.findAll(userId, { page: filter.page, size: filter.size });
   }

@@ -51,6 +51,7 @@ export class UsersService {
 
   //wishlist
   async findWishlist(userId: string) {
+    if (!userId) return [];
     return (
       await this.prisma.user.findUnique({
         where: {
@@ -135,6 +136,12 @@ export class UsersService {
   }
 
   async getCart(userId: string) {
+    if (!userId)
+      return {
+        courses: [],
+        totalPrice: 0,
+      };
+
     const res = await this.prisma.user.findUnique({
       where: {
         id: userId,
