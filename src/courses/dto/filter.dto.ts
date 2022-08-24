@@ -1,8 +1,19 @@
 export interface FilterDto {
-  prices: string[];
-  categories: string[];
-  levels: string[];
-  skills: string[];
-  durations: string[];
-  ratings: string[];
+  prices?: number[];
+  categories?: string[];
+  levels?: string[];
+  languages?: string[];
+  skills?: string[];
+  durations?: string[];
+  ratings?: string[];
+  authorId?: string;
+  sort?: Sort;
+  clearAll?: boolean;
+
+  size?: number;
+  page?: number;
+}
+export enum Sort {
+  ASC = 'ASC',
+  DESC = 'DESC',
 }

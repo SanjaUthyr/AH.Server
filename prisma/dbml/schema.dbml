@@ -8,30 +8,13 @@ Table User {
   email String [unique, not null]
   password String [not null]
   avatarUrl String
-  cart Cart
   courses Course [not null]
-  wishlist Wishlist [not null]
+  wishlist Course [not null]
   createdCourses Course [not null]
   Rating Rating [not null]
   roles Role[] [not null]
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [not null]
-}
-
-Table Wishlist {
-  id String [pk]
-  course Course [not null]
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [not null]
-  User User
-  userId String
-}
-
-Table Cart {
-  id String [pk]
-  user User [not null]
-  userId String [unique, not null]
-  courses Course [not null]
+  cartCourses Course [not null]
+  appliedCoupon String
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
 }
@@ -48,23 +31,23 @@ Table Course {
   level String [not null]
   skills String[] [not null]
   categories Category [not null]
+  duration String
   imageUrl String [not null]
   previewUrl String [not null]
   discount Int [default: 0]
   discountStart DateTime
   discountEnd DateTime
   discountCodes String[] [not null]
-  author User [not null]
-  authorId String [not null]
+  author User
+  authorId String
   students User [not null]
+  inCart User [not null]
   ratings Rating [not null]
   courseContents CourseContent [not null]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
-  cart Cart
-  cartId String
-  Wishlist Wishlist
-  wishlistId String
+  User User
+  userId String
 }
 
 Table Category {
@@ -125,6 +108,11 @@ Table UserPurchasedCourse {
   studentsId String [ref: > User.id]
 }
 
+Table UserCartCourse {
+  cartcoursesId String [ref: > Course.id]
+  incartId String [ref: > User.id]
+}
+
 Enum Role {
   ADMIN
   USER
@@ -148,15 +136,9 @@ Enum CourseLevel {
   ADVANCED
 }
 
-Ref: Wishlist.userId > User.id
-
-Ref: Cart.userId - User.id
-
 Ref: Course.authorId > User.id
 
-Ref: Course.cartId > Cart.id
-
-Ref: Course.wishlistId > Wishlist.id
+Ref: Course.userId > User.id
 
 Ref: Category.parentId > Category.id
 
